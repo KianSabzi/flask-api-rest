@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_smorest import Api
+from flask_jwt_extended import JWTManager
 import os
 
 from db import db
@@ -23,6 +24,9 @@ def create_app(db_url=None):
     db.init_app(app)
 
     api = Api(app)
+
+    app.config["JWT_SECRET_KEY"] = "118807697803134057398618144851912555542"
+    jwt = JWTManager(app)
 
     with app.app_context():
         db.create_all()
