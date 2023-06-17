@@ -7,3 +7,5 @@ class CategoryModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     tasks = db.relationship("TaskModel", back_populates="category", lazy="dynamic" , cascade="all, delete")
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), unique=False, nullable=False)
+    user = db.relationship("UserModel", back_populates="users")
