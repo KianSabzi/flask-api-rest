@@ -1,9 +1,10 @@
 from db import db
 
 class UserModel(db.Model):
-    __tablaename__ = "users"
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
+    usercode = db.Column(db.Integer, unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     tasks = db.relationship("TaskModel", back_populates="user", lazy="dynamic" , cascade="all, delete")

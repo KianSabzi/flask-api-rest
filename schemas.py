@@ -14,6 +14,7 @@ class PlainTaskSchema(Schema):
 class PlainCategorySchema(Schema):
     id = fields.Str(dump_only=True)
     name = fields.Str(required=True)
+    user_id = fields.Str(dump_only=True)
 
 class TaskSchema(PlainTaskSchema):
     category_id = fields.Int(required=True , load_only=True)
