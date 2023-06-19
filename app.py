@@ -8,6 +8,7 @@ import models
 
 from resources.task import blp as ItemBlueprint
 from resources.category import blp as StoreBlueprint
+from resources.user import blp as UserBlueprint
 
 def create_app(db_url=None):
     app = Flask(__name__)
@@ -33,6 +34,7 @@ def create_app(db_url=None):
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)
+    api.register_blueprint(UserBlueprint)
 
     return app
 

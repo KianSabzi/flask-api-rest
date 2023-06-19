@@ -36,4 +36,5 @@ class CategoryUpdateSchema(Schema):
 class UserSchema(Schema):
     id = fields.Str(dump_only=True)
     username = fields.Str(required=True)
+    usercode = fields.Int()
     password = fields.Str(required=True,load_only=True)
