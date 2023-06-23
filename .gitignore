@@ -4,3 +4,4 @@ Pipfile.lock
 __pycache__/
 instance/
 *.pyc
+settings.json
