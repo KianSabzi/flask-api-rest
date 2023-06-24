@@ -22,11 +22,11 @@ class UserRegister(MethodView):
             abort(400, message="A user with that username already exists.")
 
         user = UserModel(
-            userIdentifier = str(uuid.uuid1()),
+            user_identifier = str(uuid.uuid1()),
             username=user_data["username"],
             password=pbkdf2_sha256.hash(user_data["password"])
         )
-        print(user.userIdentifier)
+        # print(user.user_identifier)
         # usercode= random.randint(int('1'+'0'*(7-1)), int('9'*7)),
         try:
             db.session.add(user)
@@ -42,7 +42,7 @@ class UserLogin(MethodView):
     def post(self, user_data):
         user = UserModel.query.filter(UserModel.username == user_data["username"]).first()
 
-        additional_claims = {"uid": user.userIdentifier}
+        additional_claims = {"uid": user.user_identifier}
         if user and pbkdf2_sha256.verify(user_data["password"], user.password):
             access_token = create_access_token(identity=user.id, fresh=True, additional_claims=additional_claims)
             refresh_token = create_refresh_token(user.id)
