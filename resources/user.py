@@ -1,4 +1,5 @@
-import random
+import random , uuid
+from flask import jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from sqlalchemy.exc import SQLAlchemyError
@@ -21,10 +22,12 @@ class UserRegister(MethodView):
             abort(400, message="A user with that username already exists.")
 
         user = UserModel(
-            usercode= random.randint(int('1'+'0'*(7-1)), int('9'*7)),
+            userIdentifier = str(uuid.uuid1()),
             username=user_data["username"],
             password=pbkdf2_sha256.hash(user_data["password"])
         )
+        print(user.userIdentifier)
+        # usercode= random.randint(int('1'+'0'*(7-1)), int('9'*7)),
         try:
             db.session.add(user)
             db.session.commit()
@@ -39,10 +42,11 @@ class UserLogin(MethodView):
     def post(self, user_data):
         user = UserModel.query.filter(UserModel.username == user_data["username"]).first()
 
+        additional_claims = {"uid": user.userIdentifier}
         if user and pbkdf2_sha256.verify(user_data["password"], user.password):
-            access_token = create_access_token(identity=user.username, fresh=True)
-            refresh_token = create_refresh_token(user.username)
-            return {"access_token": access_token , "refresh_token": refresh_token} , 200
+            access_token = create_access_token(identity=user.id, fresh=True, additional_claims=additional_claims)
+            refresh_token = create_refresh_token(user.id)
+            return jsonify( access_token= access_token , refresh_token = refresh_token) , 200
         
         abort(401, message="Invalid credentials.")
     
