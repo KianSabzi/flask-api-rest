@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from datetime import timedelta
 import os,json
+from dotenv import load_dotenv
 
 from db import db
 import models
@@ -16,6 +17,7 @@ Access_Expires = timedelta(hours=1)
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    load_dotenv()
 
     app.config.from_file("settings.json", load=json.load)
     app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
