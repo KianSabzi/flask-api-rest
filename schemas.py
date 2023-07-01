@@ -38,3 +38,7 @@ class UserSchema(Schema):
     username = fields.Str(required=True)
     user_identifier = fields.Str()
     password = fields.Str(required=True,load_only=True)
+    email = fields.Str()
+
+class UserRegisterSchema(UserSchema):
+    phone_number = fields.Str(required=True)
