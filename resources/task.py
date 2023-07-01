@@ -4,6 +4,7 @@ from flask import request , jsonify
 from flask.views import MethodView
 from flask_smorest import Blueprint, abort
 from schemas import TaskSchema, TaskUpdateSchema,PlainTaskSchema,PlainCategorySchema
+# from sqlalchemy import or_,and_
 from sqlalchemy.exc import SQLAlchemyError
 from flask_jwt_extended import jwt_required , get_jwt_identity
 
@@ -65,7 +66,16 @@ class TaskList(MethodView):
         current_identity = get_jwt_identity()
         # print(task_data["category_id"])
         if task_data["category_id"] :
-            user_category = CategoryModel.query.filter(CategoryModel.id == task_data["category_id"] , CategoryModel.user_id == current_identity).first()
+            # user_category = CategoryModel.query.filter(
+            #                     and_(
+            #                     CategoryModel.id == task_data["category_id"] ,
+            #                     CategoryModel.user_id == current_identity
+            #                     )
+            #                 ).first()
+            user_category = CategoryModel.query.filter(                                
+                                CategoryModel.id == task_data["category_id"] ,
+                                CategoryModel.user_id == current_identity
+                            ).first()
             if not user_category:
                 abort(404, message="The category you selected does not exist.")
         # print(current_identity)
