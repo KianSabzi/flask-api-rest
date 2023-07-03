@@ -35,10 +35,13 @@ class CategoryUpdateSchema(Schema):
 
 class UserSchema(Schema):
     id = fields.Str(dump_only=True)
-    username = fields.Str(required=True)
+    username = fields.Str()
     user_identifier = fields.Str()
-    password = fields.Str(required=True,load_only=True)
+    password = fields.Str(load_only=True)
     email = fields.Str()
 
 class UserRegisterSchema(UserSchema):
     phone_number = fields.Str(required=True)
+
+class UserVerifySchema(UserRegisterSchema):
+    code = fields.Str(required=True)
