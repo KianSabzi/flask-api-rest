@@ -18,7 +18,7 @@ class PlainTaskSchema(Schema):
         """'value' is the datetime parsed from dueDate by marshmallow"""
         now = datetime.now()
         if value < now:
-            raise ValidationError("due date must be greater than current time!")
+            raise ValidationError("due date must be greater than current date/time!")
         # if the function doesn't raise an error, the check is considered passed
 
 class PlainCategorySchema(Schema):
